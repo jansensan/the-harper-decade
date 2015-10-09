@@ -4,7 +4,7 @@
 
   angular
     .module('harperdecade.HarperDecadeApp', [
-      'harperdecade.Prototype'
+      'harperdecade.components.ExchangeRateChart'
     ]);
 
 })();
