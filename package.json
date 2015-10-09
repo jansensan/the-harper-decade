@@ -1,0 +1,33 @@
+{
+  "name": "the-harper-decade",
+  "version": "0.0.1",
+  "description": "A visual chart of the value of the Canadian dollar versus the American dollar during the Harper office.",
+  "main": "the-harper-decade.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jansensan/the-harper-decade.git"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "del": "^2.0.2",
+    "gulp": "^3.9.0",
+    "gulp-angular-templatecache": "^1.7.0",
+    "gulp-inject": "^3.0.0",
+    "gulp-load-plugins": "^1.0.0-rc.1",
+    "gulp-minify-html": "^1.0.4",
+    "gulp-webserver": "^0.9.1",
+    "lazypipe": "^1.0.1",
+    "lodash": "^3.10.1",
+    "require-dir": "^0.3.0",
+    "wiredep": "^3.0.0-beta"
+  },
+  "overrides": {},
+  "resolutions": {},
+  "ignore": [
+    "**/.*",
+    "bower_components",
+    "node_modules"
+  ],
+  "keywords": [],
+  "author": "Mat Janson Blanchet <mat.jb@jansensan.net> (http://jansensan.net)"
+}

@@ -1,0 +1,1 @@
+angular.module("net.jansensan.TheHarperDecadeTemplates", []).run(["$templateCache", function($templateCache) {$templateCache.put("/scripts/components/prototype/prototype-tmpl.html","<p>Chart Prototype:</p><div class=chart></div>");}]);
