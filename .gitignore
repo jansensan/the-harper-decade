@@ -3,3 +3,8 @@
 ### MAC OSX FILES ###
 *._*
 *.DS_STORE
+
+### PROJECT FILES ###
+bower_components
+node_modules
+.tmp
