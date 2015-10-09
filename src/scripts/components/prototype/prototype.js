@@ -3,9 +3,9 @@
   'use strict';
 
   angular
-    .module('net.jansensan.Prototype', [
-      'net.jansensan.TheHarperDecadeTemplates',
-      'net.jansensan.PrototypeModel'
+    .module('harperdecade.Prototype', [
+      'harperdecade.Templates',
+      'harperdecade.PrototypeModel'
     ])
     .controller('PrototypeController', PrototypeController)
     .directive('prototype', Prototype);

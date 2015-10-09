@@ -1,10 +1,10 @@
-(function TheHarperDecadeModule() {
+(function HarperDecadeAppModule() {
 
   'use strict';
 
   angular
-    .module('net.jansensan.TheHarperDecade', [
-      'net.jansensan.Prototype'
+    .module('harperdecade.HarperDecadeApp', [
+      'harperdecade.Prototype'
     ]);
 
 })();

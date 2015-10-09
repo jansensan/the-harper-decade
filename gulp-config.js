@@ -51,7 +51,7 @@ module.exports = function () {
             file: bowerJson.name + '-tpls.js',
             dest: scriptsSourceDir,
             options: {
-              module: 'net.jansensan.TheHarperDecadeTemplates',
+              module: 'harperdecade.Templates',
               root: '/',
               standalone: true
             }

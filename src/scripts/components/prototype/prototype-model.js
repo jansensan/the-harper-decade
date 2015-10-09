@@ -3,7 +3,7 @@
   'use strict';
 
   angular
-    .module('net.jansensan.PrototypeModel', [])
+    .module('harperdecade.PrototypeModel', [])
     .factory('prototypeModel', PrototypeModel);
 
   function PrototypeModel() {
