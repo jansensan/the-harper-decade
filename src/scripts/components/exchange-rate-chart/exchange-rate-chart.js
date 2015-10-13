@@ -19,9 +19,11 @@
   }
 
   /* @ngInject */
-  function ExchangeRateChartController(exchangeRateModel) {
+  function ExchangeRateChartController(exchangeRateChartModel) {
     // vars
-    var _d3;
+    var _d3,
+      _strokeWidth = 2,
+      _paddingX = 2;
 
     // public api
     var vm = this;
@@ -35,7 +37,7 @@
       _d3 = d3.select('.exchange-rate-chart');
 
       // add event listener
-      exchangeRateModel.dataParsed.add(onDataParsed);
+      exchangeRateChartModel.dataParsed.add(onDataParsed);
     }
 
     function clearCanvas() {
@@ -43,56 +45,33 @@
     }
 
     function renderAllData() {
-      // TODO: move 2 blocks to model?
-
       // get data
-      var data = exchangeRateModel.getAll();
-
-      // create line data
-      var i = 0;
-      var px = 0;
-      var h = 360;
-      var lineData = [];
-      _.forEach(data, function convertEntryToLineData(n) {
-        px = i * 4;
-        var p1 = {x: px, y: h};
-        var p2 = {x: px, y: h - (h * n.conversion)};
-        i++;
-        lineData.push([p1, p2]);
-      });
+      var data = exchangeRateChartModel.getAll();
+      var numEntries = data.length;
+      var chartWidth = numEntries * (_strokeWidth + _paddingX);
+      var widthValue = chartWidth.toString() + 'px';
+      console.log('widthValue: ' + (widthValue));
 
       // render line data
-      _.forEach(lineData, function drawLine(n) {
+      _.forEach(data, function drawLine(n) {
         _d3
+          .attr('width', chartWidth)
           .append('line')
           .style('stroke', 'steelblue')
-          .attr('stroke-width', '2')
+          .attr('stroke-width', _strokeWidth.toString())
           .attr('x1', n[0].x)
-          .attr('y1', n[0].y)
+          .attr('y1', n[0].y + 100)
           .attr('x2', n[1].x)
-          .attr('y2', n[1].y);
+          .attr('y2', n[1].y + 100);
       });
     }
 
     function renderMonthlyAverages() {
       // get data
-      var data = exchangeRateModel.getMonthlyAverages();
-
-      // create line data
-      var i = 0;
-      var px = 0;
-      var h = 360;
-      var lineData = [];
-      _.forEach(data, function convertEntryToLineData(n) {
-        px = i * 4;
-        var p1 = {x: px, y: h};
-        var p2 = {x: px, y: h - (h * n.average)};
-        i++;
-        lineData.push([p1, p2]);
-      });
+      var data = exchangeRateChartModel.getMonthlyAverages();
 
       // render line data
-      _.forEach(lineData, function drawLine(n) {
+      _.forEach(data, function drawLine(n) {
         _d3
           .append('line')
           .style('stroke', 'steelblue')
@@ -106,21 +85,15 @@
 
     // event handlers
     function onDataParsed() {
-      var highestRate = exchangeRateModel.getHighestConversionRate();
-      var lowestRate = exchangeRateModel.getLowestConversionRate();
-
-      // console.log('highestRate: ', highestRate);
-      // console.log('lowestRate: ', lowestRate);
-
       clearCanvas();
-      // renderAllData();
-      renderMonthlyAverages();
+      renderAllData();
+      // renderMonthlyAverages();
     }
   }
 
   function getDependencies() {
     return [
-      'harperdecade.models.ExchangeRateModel'
+      'harperdecade.components.ExchangeRateChartModel'
     ];
   }
 
