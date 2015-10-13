@@ -6,6 +6,7 @@ module.exports = function () {
   var projectDir = process.env.PWD = process.cwd() + '/',
     srcDir = 'src/',
     scriptsSourceDir = 'src/scripts/'
+    stylesSourceDir = 'src/styles/'
     tempDir = '.tmp/',
     prodBuildDir = 'www/';
 
@@ -26,10 +27,25 @@ module.exports = function () {
       tempDir: tempDir
     },
     copy: {
+      tempDir: tempDir,
+      assets: {
+        sources: [
+          srcDir + 'assets/**/*'
+        ],
+        dest: tempDir + 'assets/'
+      },
+      css: {
+        sources: [
+          srcDir + 'styles/css/**/*'
+        ],
+        dest: tempDir + 'styles/'
+      }
+    },
+    style: {
       sources: [
-        srcDir + 'assets/**/*'
+        stylesSourceDir + 'less/the-harper-decade.less'
       ],
-      dest: tempDir + 'assets/',
+      dest: srcDir + 'styles/css/'
     },
     inject: {
       htmlSource: srcDir + 'index.html',
@@ -56,6 +72,17 @@ module.exports = function () {
               standalone: true
             }
           }
+        }
+      },
+      css: {
+        files: [
+          '.tmp/*.css',
+          '.tmp/**/*.css'
+        ],
+        options: {
+          ignorePath: [
+            '/.tmp/'
+          ]
         }
       }
     },

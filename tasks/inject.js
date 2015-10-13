@@ -12,11 +12,20 @@ gulp.task('inject', injectHtml);
 // method definitions
 function injectHtml() {
   var appSources = gulp.src(config.js.app.sources);
+  var cssSources = gulp.src(config.css.files);
   var templatesSources = gulp.src(config.js.templates.files);
 
   var buildHtml = lazypipe()
-    .pipe(wiredep) // js libs
-    .pipe(glp.inject, appSources) // js src app
+    // js libs
+    .pipe(wiredep)
+
+    // js src app
+    .pipe(glp.inject, appSources)
+
+    // css
+    .pipe(glp.inject, cssSources, config.css.options)
+
+    // templates
     .pipe(glp.inject,
       gulp.src(config.js.templates.files)
       .pipe(glp.minifyHtml({
