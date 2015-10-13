@@ -76,9 +76,6 @@
       });
 
       _model.dataParsed.dispatch();
-
-      // test
-      getMonthlyAverages();
     }
 
     function clearData() {
