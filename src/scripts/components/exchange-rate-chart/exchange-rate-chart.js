@@ -20,6 +20,9 @@
 
   /* @ngInject */
   function ExchangeRateChartController(exchangeRateModel) {
+    // vars
+    var _d3;
+
     // public api
     var vm = this;
 
@@ -28,28 +31,90 @@
 
     // method definitions
     function activate() {
+      // get dom object
+      _d3 = d3.select('.exchange-rate-chart');
+
+      // add event listener
       exchangeRateModel.dataParsed.add(onDataParsed);
     }
 
-    function render() {
-      var data = exchangeRateModel.getFromPastToPresent();
+    function clearCanvas() {
+      _d3.selectAll('*').remove();
+    }
 
-      d3.select('.chart')
-        .selectAll('div')
-        .data(data)
-        .enter().append('div')
-        .style('height', setHeight);
+    function renderAllData() {
+      // TODO: move 2 blocks to model?
 
-      function setHeight(dataEntry) {
-        var value = (dataEntry.usd * 1000) - 725;
-        var newHeight = value + 'px';
-        return newHeight;
-      }
+      // get data
+      var data = exchangeRateModel.getAll();
+
+      // create line data
+      var i = 0;
+      var px = 0;
+      var h = 360;
+      var lineData = [];
+      _.forEach(data, function convertEntryToLineData(n) {
+        px = i * 4;
+        var p1 = {x: px, y: h};
+        var p2 = {x: px, y: h - (h * n.conversion)};
+        i++;
+        lineData.push([p1, p2]);
+      });
+
+      // render line data
+      _.forEach(lineData, function drawLine(n) {
+        _d3
+          .append('line')
+          .style('stroke', 'steelblue')
+          .attr('stroke-width', '2')
+          .attr('x1', n[0].x)
+          .attr('y1', n[0].y)
+          .attr('x2', n[1].x)
+          .attr('y2', n[1].y);
+      });
+    }
+
+    function renderMonthlyAverages() {
+      // get data
+      var data = exchangeRateModel.getMonthlyAverages();
+
+      // create line data
+      var i = 0;
+      var px = 0;
+      var h = 360;
+      var lineData = [];
+      _.forEach(data, function convertEntryToLineData(n) {
+        px = i * 4;
+        var p1 = {x: px, y: h};
+        var p2 = {x: px, y: h - (h * n.average)};
+        i++;
+        lineData.push([p1, p2]);
+      });
+
+      // render line data
+      _.forEach(lineData, function drawLine(n) {
+        _d3
+          .append('line')
+          .style('stroke', 'steelblue')
+          .attr('stroke-width', '2')
+          .attr('x1', n[0].x)
+          .attr('y1', n[0].y)
+          .attr('x2', n[1].x)
+          .attr('y2', n[1].y);
+      });
     }
 
     // event handlers
     function onDataParsed() {
-      render();
+      var highestRate = exchangeRateModel.getHighestConversionRate();
+      var lowestRate = exchangeRateModel.getLowestConversionRate();
+
+      // console.log('highestRate: ', highestRate);
+      // console.log('lowestRate: ', lowestRate);
+
+      clearCanvas();
+      // renderAllData();
+      renderMonthlyAverages();
     }
   }
 
