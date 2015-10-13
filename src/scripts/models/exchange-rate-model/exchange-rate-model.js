@@ -9,13 +9,17 @@
   /* @ngInject */
   function ExchangeRateModel(exchangeRateService) {
 
+    // vars
+    var _data = [];
+
     // public api
     var _model = {
       // properties
-      data: [],
       isFetchingData: false,
       // methods
-      getFromPastToPresent: getFromPastToPresent,
+      getAll: getAllChronologically,
+      getYearlyAverages: getYearlyAveragesChronologically,
+      getMonthlyAverages: getMonthlyAveragesChronologically,
       getHighestConversionRate: getHighestConversionRate,
       getLowestConversionRate: getLowestConversionRate,
       // signals
@@ -67,30 +71,131 @@
             conversion: parseFloat(entry[2]),
             reciprocal: parseFloat(entry[3])
           }
-          _model.data.push(rate);
+          _data.push(rate);
         }
       });
 
       _model.dataParsed.dispatch();
+
+      // test
+      getMonthlyAverages();
     }
 
     function clearData() {
-      _model.data.length = 0;
-      _model.data = null;
-      _model.data = [];
+      _data.length = 0;
+      _data = null;
+      _data = [];
     }
 
-    function getFromPastToPresent() {
-      var sorted = _.sortByOrder(_model.data, ['dateString'], ['asc']);
-      return sorted;
+    function getAllChronologically() {
+      return _.sortByOrder(_data, ['dateString'], ['asc']);
+    }
+
+    function getYearlyAveragesChronologically() {
+      return _.sortByOrder(getYearlyAverages(), ['year'], ['asc']);
+    }
+
+    function getMonthlyAveragesChronologically() {
+      return _.sortByOrder(getMonthlyAverages(), ['year', 'month'], ['asc']);
     }
 
     function getHighestConversionRate() {
-      return _.max(_model.data, 'conversion');
+      return _.max(_data, 'conversion');
     }
 
     function getLowestConversionRate() {
-      return _.min(_model.data, 'conversion');
+      return _.min(_data, 'conversion');
+    }
+
+    function getYearlyAverages() {
+      var years = [];
+      var yearData;
+
+      // loop through all data to sort per year
+      _.forEach(_data, function iterateThroughAllData(n) {
+        checkForNewYear(n);
+        yearData.rates.push(parseFloat(n.conversion));
+      });
+
+      // loop through year data to create average
+      _.forEach(years, function iterateThoughYearlyData(n) {
+        var numEntries = n.rates.length;
+        n.average = _.sum(n.rates) / numEntries;
+      });
+
+      // return data
+      return years;
+
+      // method definitions
+      function checkForNewYear(item) {
+        // dto doesnt exist, create first
+        if (_.isUndefined(yearData)) {
+          addNewYearData(item.moment.year());
+
+        // dto exist, but data moved to new year
+        // create new dto
+        } else {
+          if (yearData.year !== item.moment.year()) {
+            addNewYearData(item.moment.year());
+          }
+        }
+      }
+
+      function addNewYearData(newYear) {
+        yearData = {
+          year: newYear,
+          rates: [],
+          average: -1
+        };
+        years.push(yearData);
+      }
+    }
+
+    function getMonthlyAverages() {
+      var months = [];
+      var monthData;
+
+      // loop through all data to sort per month
+      _.forEach(_data, function iterateThroughAllData(n) {
+        // console.log('n.moment.year(): ', n.moment.year());
+        // console.log('n: ', n);
+        checkForNewMonth(n);
+        monthData.rates.push(parseFloat(n.conversion));
+      });
+
+      // loop through month data to create average
+      _.forEach(months, function iterateThoughMonthlyData(n) {
+        var numEntries = n.rates.length;
+        n.average = _.sum(n.rates) / numEntries;
+      });
+
+      // return data
+      return months;
+
+      // method definitions
+      function checkForNewMonth(item) {
+        // dto doesnt exist, create first
+        if (_.isUndefined(monthData)) {
+          addNewMonthData(item.moment);
+
+        // dto exist, but data moved to new year
+        // create new dto
+        } else {
+          if (monthData.month !== item.moment.month()) {
+            addNewMonthData(item.moment);
+          }
+        }
+      }
+
+      function addNewMonthData(moment) {
+        monthData = {
+          year: moment.year(),
+          month: moment.month(),
+          rates: [],
+          average: -1
+        };
+        months.push(monthData);
+      }
     }
 
     function getMethodSignature(methodName) {
