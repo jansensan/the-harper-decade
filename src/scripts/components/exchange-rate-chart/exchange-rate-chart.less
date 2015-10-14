@@ -45,16 +45,7 @@
   position: relative;
   top: -8px;
   width: 64px;
-
-  @pivotX: 0;
-  @pivotY: 0;
-
-  -webkit-transform-origin: @pivotX @pivotY;
-  -moz-transform-origin: @pivotX @pivotY;
-  -ms-transform-origin: @pivotX @pivotY;
-  -o-transform-origin: @pivotX @pivotY;
-  transform-origin: @pivotX @pivotY;
-
+  .transform-origin(0, 0);
   .rotation(-90deg);
 
   .bar-label {
