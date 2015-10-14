@@ -1,0 +1,41 @@
+@chartHeight: 480px;
+
+.exchange-rate-chart-component {
+  position: relative;
+}
+
+.y-axis-usd {
+  position: relative;
+  float: left;
+  top: -34px;
+  width: 32px;
+  height: 40px;
+  padding-left: 0;
+  list-style-type: none;
+  line-height: 40px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.chart-container {
+  position: relative;
+  float: left;
+  background-color: #eee;
+  width: 924px;
+  height: @chartHeight;
+  border: 1px solid #666;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.exchange-rate-chart {
+  height: @chartHeight;
+  background-color: #eee;
+}
+
+.chart-lines {
+  position: absolute;
+  top: 0;
+  height: @chartHeight;
+}

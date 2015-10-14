@@ -10,7 +10,9 @@
   function ExchangeRateChartModel(exchangeRateModel) {
 
     // constants
-    var HEIGHT = 360;
+    var HEIGHT = 480,
+      PARITY_Y = (5 / 6) * HEIGHT,
+      PARITY_RATIO = HEIGHT / PARITY_Y;
 
     // public api
     var _model = {
@@ -20,6 +22,7 @@
       barWidth: 4,
       // methods
       getHeight: getHeight,
+      getParityY: getParityY,
       getPointsData: getPointsData,
       getBarsData: getBarsData,
       // signals
@@ -42,6 +45,11 @@
       return HEIGHT;
     }
 
+    function getParityY() {
+      return PARITY_Y;
+    }
+
+    // TODO: recalculate points positions with parity y
     function getPointsData() {
       // get raw data
       var data = exchangeRateModel.getAll();
@@ -53,8 +61,8 @@
         lineData = [];
       _.forEach(data, function convertEntryToLineData(n) {
         px = i * _model.paddingX;
-        p1 = {x: px, y: HEIGHT};
-        p2 = {x: px, y: HEIGHT - (HEIGHT * n.conversion)};
+        p1 = {x: px, y: PARITY_Y};
+        p2 = {x: px, y: PARITY_Y - (PARITY_Y * n.conversion)};
         lineData.push([p1, p2]);
         i++;
       });
@@ -74,7 +82,7 @@
         rectData = [];
       _.forEach(data, function convertEntryToRectData(n) {
         rx = i * (_model.barWidth + _model.paddingX);
-        rh = HEIGHT * n.conversion;
+        rh = PARITY_Y * n.conversion;
         ry = HEIGHT - rh;
         rectData.push({
           x: rx,
@@ -89,6 +97,7 @@
       return rectData;
     }
 
+    // TODO: recalculate points positions with parity y
     function getMonthlyAverages() {
       // get raw data
       var data = exchangeRateModel.getMonthlyAverages();
@@ -99,8 +108,8 @@
       var lineData = [];
       _.forEach(data, function convertEntryToLineData(n) {
         px = i * 4;
-        var p1 = {x: px, y: HEIGHT};
-        var p2 = {x: px, y: HEIGHT - (HEIGHT * n.average)};
+        var p1 = {x: px, y: PARITY_Y};
+        var p2 = {x: px, y: PARITY_Y - (PARITY_Y * n.average)};
         i++;
         lineData.push([p1, p2]);
       });

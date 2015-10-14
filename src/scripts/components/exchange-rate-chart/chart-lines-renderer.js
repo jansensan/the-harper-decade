@@ -13,9 +13,7 @@
     return _renderer;
 
     // method definitions
-    function render(svg, chartWidth, chartHeight) {
-      // TODO: make the 0.25 ratio a param?
-
+    function render(svg, chartWidth, chartHeight, parityY) {
       // clear
       svg.selectAll('*').remove();
 
@@ -24,25 +22,28 @@
         .attr('width', chartWidth)
         .attr('height', chartHeight);
 
-      // add 1:1 line
-      var oneOneRatioY = chartHeight * 0.25;
+      // shared variables
       var baseAlpha = 0.5, appliedAlpha = baseAlpha;
+      var parityLineY = chartHeight - parityY;
+      var size = Math.floor(parityY * 0.1);
+      var lineY;
 
+      // add 1:1 line
       svg
         .append('rect')
         .attr('x', 0)
-        .attr('y', oneOneRatioY)
+        .attr('y', parityLineY)
         .attr('width', chartWidth)
         .attr('height', 1)
         .style('fill-opacity', appliedAlpha);
 
       // build data for lines below
       var i = 0, numLoops = 10, linesData = [];
-      var size = Math.floor((chartHeight * 0.75) * 0.1);
       for(i; i < numLoops; i++) {
         appliedAlpha *= 0.75;
+        lineY = parityLineY + ((i + 1) * size);
         linesData.push({
-          y: oneOneRatioY + ((i + 1) * size),
+          y: lineY,
           alpha: appliedAlpha
         });
       }
@@ -60,13 +61,14 @@
 
       // build data for lines above
       i = 0;
-      numLoops = 5;
+      numLoops = 1;
       appliedAlpha = baseAlpha;
       linesData = [];
       for(i; i < numLoops; i++) {
         appliedAlpha *= 0.75;
+        lineY = parityLineY - ((i + 1) * size)
         linesData.push({
-          y: oneOneRatioY - ((i + 1) * size),
+          y: lineY,
           alpha: appliedAlpha
         });
       }

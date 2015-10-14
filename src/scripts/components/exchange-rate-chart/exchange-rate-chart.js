@@ -57,7 +57,8 @@
         barWidth = exchangeRateChartModel.barWidth,
         paddingX = exchangeRateChartModel.paddingX,
         chartWidth = numEntries * (barWidth + paddingX),
-        chartHeight = exchangeRateChartModel.getHeight();
+        chartHeight = exchangeRateChartModel.getHeight(),
+        parityY = exchangeRateChartModel.getParityY();
 
       // set chart width
       _chart.attr('width', chartWidth);
@@ -67,14 +68,20 @@
         _chart
           .append('rect')
           .attr('x', n.x)
-          .attr('y', n.y + exchangeRateChartModel.getHeight() * 0.25)
+          .attr('y', n.y)
           .attr('width', n.width)
           .attr('height', n.height)
-          .style('fill', 'steelblue');
+          .style('fill', 'steelblue')
+          .style('fill-opacity', 0.95);
       });
 
       // render chart lines
-      chartLinesRenderer.render(_chartLines, chartWidth, chartHeight);
+      chartLinesRenderer.render(
+        _chartLines,
+        chartWidth,
+        chartHeight,
+        parityY
+      );
     }
 
     function renderMonthlyAverages() {
