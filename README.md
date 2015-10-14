@@ -2,7 +2,7 @@
 
 ## Abstract
 
-Stephen Harper, the current Prime Minister of Canada, assumed office on February 6, 2006. Chief amongst his themes is the Economy. However, under his government–as well as other Conservative governments–the economy has not gone so well.
+Stephen Harper, the current Prime Minister of Canada, assumed office on February 6, 2006. Chief amongst his themes is the Economy. However, under his government–as well as other Conservative governments–the economy has not necessarily gone as well as claimed..
 
 This project simply aims to create a visual chart of the value of the Canadian dollar versus the American dollar during the Harper office, and put that in parallel with the chart below, which outlines the state of national debt during each office.
 
