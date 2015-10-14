@@ -19,7 +19,7 @@
       // properties
       paddingX: 4,
       strokeWidth: 2,
-      barWidth: 4,
+      barWidth: 8,
       // methods
       getHeight: getHeight,
       getParityY: getParityY,
@@ -88,7 +88,8 @@
           x: rx,
           y: ry,
           width: _model.barWidth,
-          height: rh
+          height: rh,
+          dateString: n.dateString
         });
         i++;
       });

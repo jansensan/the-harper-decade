@@ -16,15 +16,16 @@
   text-align: center;
   font-size: 14px;
   font-weight: bold;
+  color: #666;
 }
 
 .chart-container {
   position: relative;
   float: left;
-  background-color: #eee;
+  border: 1px solid #666;
+  background-color: #ffe;
   width: 924px;
   height: @chartHeight;
-  border: 1px solid #666;
   overflow-x: scroll;
   overflow-y: hidden;
 }
@@ -38,4 +39,32 @@
   position: absolute;
   top: 0;
   height: @chartHeight;
+}
+
+.bar-labels {
+  position: relative;
+  top: -8px;
+  width: 64px;
+
+  @pivotX: 0;
+  @pivotY: 0;
+
+  -webkit-transform-origin: @pivotX @pivotY;
+  -moz-transform-origin: @pivotX @pivotY;
+  -ms-transform-origin: @pivotX @pivotY;
+  -o-transform-origin: @pivotX @pivotY;
+  transform-origin: @pivotX @pivotY;
+
+  .rotation(-90deg);
+
+  .bar-label {
+    margin-top: 1px;
+    @barWidth: 12px;
+    height: @barWidth;
+    line-height: @barWidth;
+    text-align: left;
+    font-size: 10px;
+    font-weight: bold;
+    color: #eaf3f7;
+  }
 }

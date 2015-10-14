@@ -25,7 +25,7 @@
   ) {
 
     // vars
-    var _chart, _chartLines;
+    var _chart, _chartLines, _barLabelsHolder;
 
     // public api
     var vm = this;
@@ -38,6 +38,7 @@
       // get dom objects
       _chart = d3.select('.exchange-rate-chart');
       _chartLines = d3.select('.chart-lines');
+      _barLabelsHolder = d3.select('.bar-labels');
 
       // add event listener
       exchangeRateChartModel.dataParsed.add(onDataParsed);
@@ -45,10 +46,11 @@
 
     function clearCanvas() {
       _chart.selectAll('*').remove();
+      _barLabelsHolder.selectAll('*').remove();
     }
 
     function renderAll() {
-      exchangeRateChartModel.barWidth = 8;
+      exchangeRateChartModel.barWidth = 12;
       exchangeRateChartModel.paddingX = 1;
 
       // get data
@@ -65,6 +67,7 @@
 
       // render bars
       _.forEach(data, function drawBar(n) {
+        // add bar
         _chart
           .append('rect')
           .attr('x', n.x)
@@ -73,6 +76,11 @@
           .attr('height', n.height)
           .style('fill', 'steelblue')
           .style('fill-opacity', 0.95);
+        // add label
+        _barLabelsHolder
+          .append('div')
+          .attr('class', 'bar-label')
+          .text(n.dateString);
       });
 
       // render chart lines
