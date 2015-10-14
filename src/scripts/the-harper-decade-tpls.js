@@ -1,2 +1,2 @@
-angular.module("harperdecade.Templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("/scripts/components/exchange-rate-chart/exchange-rate-chart-tmpl.html","<h2>Exchange Rate Chart</h2><div class=chart-container><svg class=exchange-rate-chart></svg></div>");
+angular.module("harperdecade.Templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("/scripts/components/exchange-rate-chart/exchange-rate-chart-tmpl.html","<h2>Exchange Rate Chart</h2><div class=chart-container><svg class=exchange-rate-chart></svg><svg class=chart-lines></svg></div>");
 $templateCache.put("/scripts/components/prototype/prototype-tmpl.html","<p>Chart Prototype:</p><div class=chart></div>");}]);
