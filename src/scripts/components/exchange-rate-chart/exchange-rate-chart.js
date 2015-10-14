@@ -19,7 +19,11 @@
   }
 
   /* @ngInject */
-  function ExchangeRateChartController(exchangeRateChartModel) {
+  function ExchangeRateChartController(
+    chartLinesRenderer,
+    exchangeRateChartModel
+  ) {
+
     // vars
     var _chart, _chartLines;
 
@@ -39,76 +43,6 @@
       exchangeRateChartModel.dataParsed.add(onDataParsed);
     }
 
-    function renderChartLines(newWidth) {
-      var chartHeight = exchangeRateChartModel.getHeight();
-
-      // clear
-      _chartLines.selectAll('*').remove();
-
-      // set dimensions
-      _chartLines
-        .attr('width', newWidth)
-        .attr('height', chartHeight);
-
-      // add 1:1 line
-      var oneOneRatioY = chartHeight * 0.25;
-      var baseAlpha = 0.5, appliedAlpha = baseAlpha;
-
-      _chartLines
-        .append('rect')
-        .attr('x', 0)
-        .attr('y', oneOneRatioY)
-        .attr('width', newWidth)
-        .attr('height', 1)
-        .style('fill-opacity', appliedAlpha);
-
-      // build data for lines below
-      var i = 0, numLoops = 10, linesData = [];
-      var size = Math.floor((chartHeight * 0.75) * 0.1);
-      for(i; i < numLoops; i++) {
-        appliedAlpha *= 0.75;
-        linesData.push({
-          y: oneOneRatioY + ((i + 1) * size),
-          alpha: appliedAlpha
-        });
-      }
-
-      // draw lines below
-      _.forEach(linesData, function drawLineBelow(n) {
-        _chartLines
-          .append('rect')
-          .attr('x', 0)
-          .attr('y', n.y)
-          .attr('width', newWidth)
-          .attr('height', 1)
-          .style('fill-opacity', n.alpha);
-      });
-
-      // build data for lines above
-      i = 0;
-      numLoops = 5;
-      appliedAlpha = baseAlpha;
-      linesData = [];
-      for(i; i < numLoops; i++) {
-        appliedAlpha *= 0.75;
-        linesData.push({
-          y: oneOneRatioY - ((i + 1) * size),
-          alpha: appliedAlpha
-        });
-      }
-
-      // draw lines below
-      _.forEach(linesData, function drawLineAbove(n) {
-        _chartLines
-          .append('rect')
-          .attr('x', 0)
-          .attr('y', n.y)
-          .attr('width', newWidth)
-          .attr('height', 1)
-          .style('fill-opacity', n.alpha);
-      });
-    }
-
     function clearCanvas() {
       _chart.selectAll('*').remove();
     }
@@ -123,7 +57,7 @@
         barWidth = exchangeRateChartModel.barWidth,
         paddingX = exchangeRateChartModel.paddingX,
         chartWidth = numEntries * (barWidth + paddingX),
-        widthValue = chartWidth.toString() + 'px';
+        chartHeight = exchangeRateChartModel.getHeight();
 
       // set chart width
       _chart.attr('width', chartWidth);
@@ -139,7 +73,8 @@
           .style('fill', 'steelblue');
       });
 
-      renderChartLines(chartWidth);
+      // render chart lines
+      chartLinesRenderer.render(_chartLines, chartWidth, chartHeight);
     }
 
     function renderMonthlyAverages() {
@@ -168,6 +103,7 @@
 
   function getDependencies() {
     return [
+      'harperdecade.components.ChartLinesRenderer',
       'harperdecade.components.ExchangeRateChartModel'
     ];
   }
